@@ -1,0 +1,21 @@
+AppBundle\Entity\SignalGroup:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+        status:
+            expose: false
+        createDate:
+            expose: false
+        createUser:
+            expose: false
+        writeDate:
+            expose: false
+        writeUser:
+            expose: false
+        frequency:
+            expose: true
+        currentUnbalance:
+            expose: true
+        voltageUnbalance:
+            expose: true

@@ -1,0 +1,17 @@
+AppBundle\Entity\Company:
+  exclusion_policy: ALL
+  properties:
+      id:
+          expose: true
+      status:
+          expose: false
+      createDate:
+          expose: false
+      createUser:
+          expose: false
+      writeDate:
+          expose: false
+      writeUser:
+          expose: false
+      name:
+          expose: true

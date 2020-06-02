@@ -1,0 +1,57 @@
+<div class="collapse navbar-collapse" id="mysidebar">
+
+    <ul class="nav nav-sidebar">
+        <li>
+
+            {% if 'ROLE_ADMIN' in app.user.roles  %}
+
+                <a data-toggle="collapse" data-target="#collapse_admin">
+                    <span class="glyphicon glyphicon-list-alt"></span> Administraci&oacute;n <span class="caret"></span>
+                </a>
+
+                <div id="collapse_admin" class="panel-collapse collapse">
+                    <div class="list-group">
+                        <a class="list-group-item" href="{{ path('list_locations') }}">
+                            <span class="glyphicon glyphicon-globe"></span> Ubicaciones
+                        </a>
+                        <a class="list-group-item" href="{{ path('list_energy_points') }}">
+                            <span class="glyphicon glyphicon-flash"></span> Puntos energ&eacute;ticos
+                        </a>
+                        <a class="list-group-item" href="#">
+                            <span class="glyphicon glyphicon-th-large"></span> Unidades energ&eacute;ticas
+                        </a>
+
+                        <a class="list-group-item" href="{{ path('list_collectors') }}">
+                            <span class="glyphicon glyphicon-record"></span> Unidades recolectoras
+                        </a>
+                    </div>
+                </div>
+
+            {% endif %}
+
+            {% if 'ROLE_MANAGER' in app.user.roles  %}
+
+                <a data-toggle="collapse" data-target="#collapse_reports">
+                    <span class="glyphicon glyphicon-signal"></span> Reportes <span class="caret"></span>
+                </a>
+
+                <div id="collapse_reports" class="panel-collapse collapse">
+                    <div class="list-group">
+                        <a class="list-group-item" href="{{ path('list_locations') }}">
+                            <span class="glyphicon glyphicon-globe"></span> Reporte 1
+                        </a>
+                    </div>
+                </div>
+
+            {% endif %}
+
+            {% if 'ROLE_OPERADOR' in app.user.roles  %}
+
+                {# INCLUDE MENUS HERE....#}
+
+            {% endif %}
+
+        </li>
+
+    </ul>
+</div>

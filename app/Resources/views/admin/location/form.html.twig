@@ -1,0 +1,142 @@
+{% extends '::dynamic-layout.html.twig' %}
+
+{% block javascripts %}
+
+    <script>
+
+        $('#mygreatform').submit(function(){
+            $(this).find('input:text').each(function(){
+                $(this).val($.trim($(this).val()));
+            });
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block container %}
+
+    <ol class="breadcrumb">
+        <li>
+          <a href="{{ path('list_locations',{'page':1}) }}"><span class="glyphicon glyphicon-globe"></span>
+              &nbsp;Ubicaciones
+          </a>
+        </li>
+        <li class="active">
+            {% if type == 'NEW' %}
+                <span class="glyphicon glyphicon-file"></span>&nbsp;Agregar ubicaci&oacute;n
+            {% else %}
+                <span class="glyphicon glyphicon-file"></span>&nbsp;Editar ubicaci&oacute;n
+            {% endif %}
+        </li>
+    </ol>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Diligencie los campos
+        </div>
+
+        <div class="panel-body">
+
+            {{
+                form_start(form, {
+                    'attr':{
+                        'class':'form-horizontal',
+                        'role':'form'
+                    },
+                    'id':'mygreatform'
+                })
+            }}
+            <div class="form-group has-feedback">
+                <label class="control-label col-sm-2" for="name">Nombre:</label>
+                <div class="col-sm-10">
+
+                    {{
+                        form_widget(form.name, {
+                            'attr':{
+                                'class':'form-control',
+                                'oninvalid':'this.setCustomValidity("Debe ingresar el nombre.")',
+                            },
+                            'id':'name',
+                            'required':false,
+                        })
+                    }}
+
+                {% if form.name.vars.errors | length > 0 %}
+                    <br/>
+                    <div class="alert alert-danger">
+                        {{ form_errors(form.name) }}
+                    </div>
+                {% endif %}
+
+                </div>
+            </div>
+
+            <div class="form-group has-feedback">
+                <label class="control-label col-sm-2" for="address">Direcci&oacute;n:</label>
+                <div class="col-sm-10">
+                {{
+                    form_widget(form.address, {
+                        'attr':{
+                            'class':'form-control',
+                        },
+                        'id':'address',
+                        'required':false,
+                    })
+                }}
+                </div>
+            </div>
+
+            <div class="form-group has-feedback">
+                <label class="control-label col-sm-2" for="company">Compa&ntilde;&iacute;a</label>
+                <div class="col-sm-10">
+                    {{
+                    form_widget(form.company, {
+                        'attr':{
+                            'class':'form-control',
+                        },
+                        'id':'company',
+                        'required':true,
+                    })
+                    }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                {{
+                    form_widget(form.save, {
+                        'attr':{
+                            'class':'btn btn-primary',
+                        },
+                        'id':'name',
+                        'required':false,
+                        'label':'Guardar'
+                    })
+                }}
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+
+    {% if message != null %}
+        {% if message == 'SUCCESS' %}
+            <div class="alert alert-success">
+                <span class="glyphicon glyphicon-floppy-saved"></span>
+                ¡Ubicaci&oacute;n guardada satisfactoriamente!
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+        {% elseif message == 'ERROR' %}
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-floppy-remove"></span>
+                ¡Error guardando ubicaci&oacute;n! {{ detailed_message }}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

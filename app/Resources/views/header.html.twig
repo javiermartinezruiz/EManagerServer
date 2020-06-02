@@ -1,0 +1,47 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="glyphicon glyphicon-align-justify"></span>
+            </button>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mysidebar">
+                <span class="glyphicon glyphicon-list"></span>
+            </button>
+            <a class="navbar-brand" href="#">EManager</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+                <li ><a href="#">Search</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <li>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-inbox"></span>
+                        Notificaciones
+                        <span class="label label-pill label-info">4</span>
+                    </a>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="glyphicon glyphicon-user"></span>
+                        Opciones
+                        <span class="caret"></span></a>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Configuraci&oacute;n</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="{{ path('logout') }}">
+                        <span class="glyphicon glyphicon-log-out"></span> Salir
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,89 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    user_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [AppBundle\Entity\User]
+
+    location_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [AppBundle\Entity\Location]
+
+    energypoint_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [AppBundle\Entity\EnergyPoint]
+
+    signal_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [AppBundle\Entity\Signal]
+
+    signalgroup_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [AppBundle\Entity\SignalGroup]
+
+    collector_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [AppBundle\Entity\Collector]
+
+    schedule_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [AppBundle\Entity\Schedule]
+
+    assignedcollector_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [AppBundle\Entity\AssignedCollector]
+
+    annualcost_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [AppBundle\Entity\AnnualCost]
+
+    user_service:
+        class: AppBundle\Services\UserService
+        arguments: ["@user_repository"]
+
+    location_service:
+        class: AppBundle\Services\LocationService
+        arguments: ["@location_repository", "@energypoint_repository", "@annualcost_repository"]
+
+    energypoint_service:
+        class: AppBundle\Services\EnergyPointService
+        arguments: ["@energypoint_repository", "@assignedcollector_repository", "@signal_repository"]
+
+    signal_service:
+        class: AppBundle\Services\SignalService
+        arguments: ["@signalgroup_repository", "@signal_repository"]
+
+    collector_service:
+        class: AppBundle\Services\CollectorService
+        arguments: ["@collector_repository","@assignedcollector_repository", "@schedule_repository"]
+
+    schedule_service:
+        class: AppBundle\Services\ScheduleService
+        arguments: ["@schedule_repository"]
+
+

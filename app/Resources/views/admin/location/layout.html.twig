@@ -1,0 +1,121 @@
+{% extends '::default/index.html.twig' %}
+
+{% block javascripts %}
+    <script>
+
+        var deletePath = null;
+
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+
+            //triggered when modal is about to be shown
+            $('#confirmDelete').on('show.bs.modal', function(e) {
+
+                //get data-id attribute of the clicked element
+                var idFilter = $(e.relatedTarget).data('location-id');
+                var nameFilter = $("#locationNameFilter").val();
+
+                if(nameFilter == null || nameFilter.trim() == ''){
+                    deletePath = "{{ path('delete_location', {'id': 'xxx'}) }}";
+                    deletePath = deletePath.replace("xxx", idFilter);
+                }else{
+                    deletePath = "{{ path('delete_location', {'id': 'xxx', 'name':'yyy'}) }}";
+                    deletePath = deletePath.replace("xxx", idFilter);
+                    deletePath = deletePath.replace("yyy", nameFilter);
+                }
+
+            });
+
+            $("#confirm").click(function(){
+               // $("#listLocation").load(deletePath);
+                $.ajax({
+                    url: deletePath,
+                    success: function (response) {
+                        $("#listLocation").html(response);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            });
+
+        });
+
+    </script>
+{% endblock %}
+
+{% block container %}
+
+    <ol class="breadcrumb">
+        <li class="active"><span class="glyphicon glyphicon-globe"></span>&nbsp;
+            Ubicaciones
+        </li>
+    </ol>
+
+
+    <div class="row">
+
+        <div class="col-md-12">
+        {{ form_start(form, {'attr':{'class':'form-inline', 'role':'form'}}) }}
+
+            <a href="{{ path('new_location') }}" class="btn btn-primary" >
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Nueva ubicaci&oacute;n
+            </a>
+
+            <div class="form-group has-feedback pull-right">
+                {{ form_errors(form.name) }}
+                {{
+                    form_widget(form.name, {
+                        'attr':{
+                            'class':'form-control',
+                            'placeholder':'Filtrar por nombre...'
+                        },
+                        'required':false,
+                        'id':'locationNameFilter',
+                    })
+                }}
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+
+
+
+        {{ form_end(form) }}
+        </div>
+
+        <br/><br/><br/>
+
+        <div class="col-md-12">
+
+            <span id="listLocation">
+            {% include 'admin/location/list.html.twig' %}
+            </span>
+
+            <!-- Modal -->
+            <div class="modal fade" id="confirmDelete" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmar borrado</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <p>¿Confirma que desea eliminar el registro?</p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <a id="confirm" href="#"
+                               class="btn btn-warning" data-dismiss="modal">Aceptar</a>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

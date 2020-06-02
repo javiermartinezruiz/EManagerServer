@@ -1,0 +1,160 @@
+{% extends '::dynamic-layout.html.twig' %}
+
+{% block javascripts %}
+
+    <script>
+
+        $('#mygreatform').submit(function(){
+            $(this).find('input:text').each(function(){
+                $(this).val($.trim($(this).val()));
+            });
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block container %}
+
+    <ol class="breadcrumb">
+        <li>
+            <a href="{{ path('list_energy_points',{'page':1}) }}"><span class="glyphicon glyphicon-flash"></span>
+                &nbsp;Puntos energ&eacute;ticos
+            </a>
+        </li>
+        <li class="active">
+            {% if type == 'NEW' %}
+                <span class="glyphicon glyphicon-file"></span>&nbsp;Agregar punto energ&eacute;tico
+            {% else %}
+                <span class="glyphicon glyphicon-file"></span>&nbsp;Editar punto energ&eacute;tico
+            {% endif %}
+        </li>
+    </ol>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Diligencie los campos
+        </div>
+
+        <div class="panel-body">
+
+            {{
+            form_start(form, {
+                'attr':{
+                    'class':'form-horizontal',
+                    'role':'form'
+                },
+                'id':'mygreatform'
+            })
+            }}
+            <div class="form-group has-feedback">
+                <label class="control-label col-sm-2" for="code">C&oacute;digo:</label>
+                <div class="col-sm-10">
+
+                    {{
+                    form_widget(form.code, {
+                        'attr':{
+                            'class':'form-control',
+                            'oninvalid':'this.setCustomValidity("Debe ingresar el c&oacute;digo.")',
+                        },
+                        'id':'code',
+                        'required':false,
+                    })
+                    }}
+
+                    {% if form.code.vars.errors | length > 0 %}
+                        <br/>
+                        <div class="alert alert-danger">
+                            {{ form_errors(form.code) }}
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="form-group has-feedback">
+                <label class="control-label col-sm-2" for="description">Descripci&oacute;n:</label>
+                <div class="col-sm-10">
+                    {{
+                    form_widget(form.description, {
+                        'attr':{
+                            'class':'form-control',
+                        },
+                        'id':'description',
+                        'required':false,
+                    })
+                    }}
+
+
+                </div>
+            </div>
+
+
+            <div class="form-group has-feedback">
+                <label class="control-label col-sm-2" for="currentStat">Estado:</label>
+                <div class="col-sm-10">
+                    {{
+                    form_widget(form.currentStat, {
+                        'attr':{
+                            'class':'form-control',
+                        },
+                        'id':'currentStat',
+                        'required':false,
+                    })
+                    }}
+                </div>
+            </div>
+
+            <div class="form-group has-feedback">
+                <label class="control-label col-sm-2" for="location">Ubicaci&oacute;n</label>
+                <div class="col-sm-10">
+                    {{
+                    form_widget(form.location, {
+                        'attr':{
+                            'class':'form-control',
+                        },
+                        'id':'location',
+                        'required':true,
+                    })
+                    }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    {{
+                    form_widget(form.save, {
+                        'attr':{
+                            'class':'btn btn-primary',
+                        },
+                        'id':'save',
+                        'required':false,
+                        'label':'Guardar'
+                    })
+                    }}
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+
+    {% if message != null %}
+        {% if message == 'SUCCESS' %}
+            <div class="alert alert-success">
+                <span class="glyphicon glyphicon-floppy-saved"></span>
+                ¡Punto energ&eacute;tico guardado satisfactoriamente!
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+        {% elseif message == 'ERROR' %}
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-floppy-remove"></span>
+                ¡Error guardando punto energ&eacute;tico! {{ detailed_message }}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

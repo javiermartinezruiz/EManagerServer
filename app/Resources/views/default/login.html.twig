@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}EManager Server{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    {% block javascripts %}
+
+        <script>
+
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+
+        </script>
+
+    {% endblock %}
+
+</head>
+<body>
+
+    <div class="container">
+
+        <h2>Inicio de sesi&oacute;n</h2>
+
+
+        <form role="form" action="{{ path('login_check') }}" method="post">
+
+            <div class="form-group">
+                <label for="usr">Usuario:</label>
+                <input type="text" id="usr" class="form-control" placeholder="Nombre de usuario" name="_username" required value="{{ last_username }}" />
+            </div>
+
+            <div class="form-group">
+                <label for="pwd">Contrase&ntilde;a:</label>
+                <input type="password" id="pwd" class="form-control" required placeholder="Contrase&ntilde;a" name="_password" />
+            </div>
+            {#
+                añade lo siguiente si quieres redirigir al usuario a una
+                URL concreta después del login (explicado más adelante)
+                <input type="hidden" name="_target_path" value="/account" />
+            #}
+
+            <button class="btn btn-primary btn-md" data-toggle="tooltip" data-placement="bottom" title="Ingrese al sistema" type="submit"> <span class="glyphicon glyphicon-log-in"></span>&nbsp;Ingresar</button>
+
+
+        </form>
+
+
+        <br/>
+
+        {% if error %}
+
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-alert"></span>&nbsp;<strong>Error!</strong> Verifique las credenciales.
+            </div>
+
+        {% endif %}
+
+
+
+
+    </div>
+
+</body>
+
+</html>

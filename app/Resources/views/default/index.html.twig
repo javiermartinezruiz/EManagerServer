@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}EManager Server{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+        {% block javascripts %}{% endblock %}
+
+    </head>
+    <body>
+
+        {% include 'header.html.twig' %}
+
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-sm-3">
+                    {# Menu principal #}
+                    {% block menu %}
+                        {% include 'menu.html.twig' %}
+                    {% endblock %}
+                </div>
+
+                <div class="col-sm-9">
+                    {# Container #}
+                    {% block container %}
+                    {% endblock %}
+
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,17 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+login_check:
+    pattern:   /login_check
+
+logout:
+    path:   /logout
+
+rest_signals:
+    type: rest
+    resource: AppBundle\Controller\SignalsController
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+

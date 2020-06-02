@@ -1,0 +1,541 @@
+{% extends '::dynamic-layout.html.twig' %}
+
+{% block javascripts %}
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
+    <script>
+
+        $('#mygreatform').submit(function(){
+            $(this).find('input:text').each(function(){
+                $(this).val($.trim($(this).val()));
+            });
+        });
+
+        //$(document).ajaxStart(function() {
+          //  $("#collection_data_schedule").html("<img src='{{ asset('images/loading_spinner.gif')  }}'/>");
+          //  $("#sending_data_schedule").html("<img src='{{ asset('images/loading_spinner.gif')  }}'/>");
+        //});
+
+        $(document).ready(function(){
+
+            //Setting tooltip configuration
+            $('[data-toggle="tooltip"]').tooltip();
+
+            //Setting delete configuration
+            var deleteCollectionDataPath = null;
+            //triggered when modal is about to be shown
+            $('#confirmDeleteCollectionSchedule').on('show.bs.modal', function(e) {
+                //get data-id attribute of the clicked element
+                var idFilter = $(e.relatedTarget).data('location-id');
+                deleteCollectionDataPath = Routing.generate('delete_collection_schedule',{id:idFilter, collector:$("#code").val()});
+
+            });
+
+            //Confirm delete
+            $("#confirmDeleteCollectionButton").click(function(){
+                $.ajax({
+                    url: deleteCollectionDataPath,
+                    success: function (response) {
+                        $("#collection_data_schedule").html(response);
+
+                        //Setting tooltip configuration
+                        $('[data-toggle="tooltip"]').tooltip();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            });
+
+
+            var deleteSendingDataPath = null;
+            //triggered when modal is about to be shown
+            $('#confirmDeleteSendingDataSchedule').on('show.bs.modal', function(e) {
+                //get data-id attribute of the clicked element
+                var idFilter = $(e.relatedTarget).data('location-id');
+                deleteSendingDataPath = Routing.generate('delete_sendingdata_schedule',{id:idFilter, collector:$("#code").val()});
+
+            });
+
+            //Confirm delete
+            $("#confirmDeleteSendingDataButton").click(function(){
+                $.ajax({
+                    url: deleteSendingDataPath,
+                    success: function (response) {
+                        $("#sending_data_schedule").html(response);
+
+                        //Setting tooltip configuration
+                        $('[data-toggle="tooltip"]').tooltip();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            });
+
+
+
+            var deleteSendingEventsPath = null;
+            //triggered when modal is about to be shown
+            $('#confirmDeleteSendingEventsSchedule').on('show.bs.modal', function(e) {
+                //get data-id attribute of the clicked element
+                var idFilter = $(e.relatedTarget).data('location-id');
+                deleteSendingEventsPath = Routing.generate('delete_sendingevents_schedule',{id:idFilter, collector:$("#code").val()});
+
+            });
+
+            //Confirm delete
+            $("#confirmDeleteSendingEventsButton").click(function(){
+                $.ajax({
+                    url: deleteSendingEventsPath,
+                    success: function (response) {
+                        $("#sending_events_schedule").html(response);
+
+                        //Setting tooltip configuration
+                        $('[data-toggle="tooltip"]').tooltip();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            });
+
+
+            //Loading collection schedule
+            loadCollectionSchedule();
+
+            //Loading sending data schedule
+            loadSendingDataSchedule();
+
+            //Loading sending events schedule
+            loadSendingEventsSchedule();
+
+
+            $('#collectionFixedTime').on('show.bs.modal', function(e) {
+                $.ajax({
+                    url: Routing.generate('add_collectiondata_schedule', {collector:$("#code").val()}),
+                    success: function (response) {
+                        $("#formCollectionFixedTime").html(response);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+
+            });
+
+
+
+        });
+
+
+
+
+
+
+        /**
+         * Load all collection data hours
+         */
+        function loadCollectionSchedule(page){
+            var schedule = "";
+            if(typeof page === 'undefined'){
+                schedule = Routing.generate('load_collection_schedule', {collector: $("#code").val()});
+            }else{
+                schedule = Routing.generate('load_collection_schedule', {collector: $("#code").val(), page:page});
+            }
+            console.log("Collection data schedule="+schedule);
+            $.ajax({
+                url: schedule,
+                success: function (response) {
+                    $("#collection_data_schedule").html(response);
+
+                    //Setting tooltip configuration
+                    $('[data-toggle="tooltip"]').tooltip();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
+
+        /**
+         * Load all sending data hours
+         */
+        function loadSendingDataSchedule(page){
+            var schedule = "";
+            if(typeof page === 'undefined'){
+                schedule = Routing.generate('load_sendingdata_schedule', {collector: $("#code").val()});
+            }else{
+                schedule = Routing.generate('load_sendingdata_schedule', {collector: $("#code").val(), page:page});
+            }
+            console.log("Sending data schedule="+schedule);
+            $.ajax({
+                url: schedule,
+                success: function (response) {
+                    $("#sending_data_schedule").html(response);
+
+                    //Setting tooltip configuration
+                    $('[data-toggle="tooltip"]').tooltip();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
+
+        /**
+         * Load all sending events hours
+         */
+        function loadSendingEventsSchedule(page){
+            var schedule = "";
+            if(typeof page === 'undefined'){
+                schedule = Routing.generate('load_sendingevents_schedule', {collector: $("#code").val()});
+            }else{
+                schedule = Routing.generate('load_sendingevents_schedule', {collector: $("#code").val(), page:page});
+            }
+            console.log("Sending events schedule="+schedule);
+            $.ajax({
+                url: schedule,
+                success: function (response) {
+                    $("#sending_events_schedule").html(response);
+
+                    //Setting tooltip configuration
+                    $('[data-toggle="tooltip"]').tooltip();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
+
+
+
+    </script>
+
+
+{% endblock %}
+
+{% block container %}
+
+    <ol class="breadcrumb">
+        <li>
+            <a href="{{ path('list_collectors',{'page':1}) }}"><span class="glyphicon glyphicon-record"></span>
+                &nbsp;Unidades recolectoras
+            </a>
+        </li>
+        <li class="active">
+            {% if type == 'NEW' %}
+                <span class="glyphicon glyphicon-file"></span>&nbsp;Agregar unidad recolectora
+            {% else %}
+                <span class="glyphicon glyphicon-file"></span>&nbsp;Editar unidad recolectora
+            {% endif %}
+        </li>
+    </ol>
+
+    <div class="form-group">
+        <div class="col-sm-12">
+
+            <ul class="nav nav-tabs ">
+                <li class="active"><a data-toggle="tab" id="tab_generalinfo" href="#general_info">Informaci&oacute;n general</a></li>
+                <li><a data-toggle="tab" id="tab_collectdata" href="#collect_data">Recolecci&oacute;n de datos</a></li>
+                <li><a data-toggle="tab" id="tab_senddata" href="#send_data">Env&iacute;o de datos</a></li>
+                <li><a data-toggle="tab" id="tab_sendevents" href="#send_events">Env&iacute;o de eventos</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="general_info" class="tab-pane active">
+
+                    <br>
+
+                    {{
+                    form_start(form, {
+                        'attr':{
+                            'class':'form-horizontal',
+                            'role':'form'
+                        },
+                        'id':'mygreatform'
+                    })
+                    }}
+                    <div class="form-group has-feedback">
+                        <label class="control-label col-sm-2" for="code">C&oacute;digo:</label>
+                        <div class="col-sm-10">
+
+                            {{
+                            form_widget(form.code, {
+                                'attr':{
+                                    'class':'form-control',
+                                    'oninvalid':'this.setCustomValidity("Debe ingresar el c&oacute;digo.")',
+                                },
+                                'id':'code',
+                                'required':false,
+                            })
+                            }}
+
+                            {% if form.code.vars.errors | length > 0 %}
+                                <br/>
+                                <div class="alert alert-danger">
+                                    {{ form_errors(form.code) }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <label class="control-label col-sm-2" for="description">Descripci&oacute;n:</label>
+                        <div class="col-sm-10">
+                            {{
+                            form_widget(form.description, {
+                                'attr':{
+                                    'class':'form-control',
+                                },
+                                'id':'description',
+                                'required':false,
+                            })
+                            }}
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group has-feedback">
+                        <label class="control-label col-sm-2" for="currentStat">Estado:</label>
+                        <div class="col-sm-10">
+                            {{
+                            form_widget(form.currentStat, {
+                                'attr':{
+                                    'class':'form-control',
+                                },
+                                'id':'currentStat',
+                                'required':false,
+                            })
+                            }}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            {{
+                            form_widget(form.save, {
+                                'attr':{
+                                    'class':'btn btn-primary',
+                                },
+                                'id':'save',
+                                'required':false,
+                                'label':'Guardar'
+                            })
+                            }}
+                        </div>
+                    </div>
+
+                    {{ form_end(form) }}
+
+
+                    {% if message != null %}
+                        {% if message == 'SUCCESS' %}
+                            <div class="alert alert-success">
+                                <span class="glyphicon glyphicon-floppy-saved"></span>
+                                ¡Unidad recolectora guardada satisfactoriamente!
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            </div>
+                        {% elseif message == 'ERROR' %}
+                            <div class="alert alert-danger">
+                                <span class="glyphicon glyphicon-floppy-remove"></span>
+                                ¡Error guardando unidad recolectora! {{ detailed_message }}
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                </div>
+
+                <div id="collect_data" class="tab-pane fade">
+                    <br>
+                    <button id="addCollectionFixedTime" data-toggle="modal"
+                            data-target="#collectionFixedTime"
+                            class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-time"></span>
+                        Agregar hora
+                    </button>
+                    <button class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-option-vertical"></span>
+                        Definir frecuencia
+                    </button>
+                    <br><br>
+                    <span id="collection_data_schedule">
+                        {% include 'admin/collector/form_collect_data.html.twig' %}
+                    </span>
+                </div>
+
+                <div id="send_data" class="tab-pane fade">
+                    <br>
+                    <button class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-time"></span>
+                        Agregar hora
+                    </button>
+                    <button class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-option-vertical"></span>
+                        Definir frecuencia
+                    </button>
+                    <br><br>
+                    <span id="sending_data_schedule">
+                        {% include 'admin/collector/form_send_data.html.twig' %}
+                    </span>
+                </div>
+                <div id="send_events" class="tab-pane fade">
+                    <br>
+                    <button class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-time"></span>
+                        Agregar hora
+                    </button>
+                    <button class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-option-vertical"></span>
+                        Definir frecuencia
+                    </button>
+                    <br><br>
+                    <span id="sending_events_schedule">
+                        {% include 'admin/collector/form_send_events.html.twig' %}
+                    </span>
+                </div>
+
+                <!-- Modal collection data -->
+                <div class="modal fade" id="confirmDeleteCollectionSchedule" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Confirmar borrado</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>¿Confirma que desea eliminar el registro?</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <a id="confirmDeleteCollectionButton" href="#"
+                                   class="btn btn-warning" data-dismiss="modal">Aceptar</a>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal sending data -->
+                <div class="modal fade" id="confirmDeleteSendingDataSchedule" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Confirmar borrado</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>¿Confirma que desea eliminar el registro?</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <a id="confirmDeleteSendingDataButton" href="#"
+                                   class="btn btn-warning" data-dismiss="modal">Aceptar</a>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Modal sending data -->
+                <div class="modal fade" id="confirmDeleteSendingDataSchedule" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Confirmar borrado</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>¿Confirma que desea eliminar el registro?</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <a id="confirmDeleteSendingDataButton" href="#"
+                                   class="btn btn-warning" data-dismiss="modal">Aceptar</a>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal sending events -->
+                <div class="modal fade" id="confirmDeleteSendingEventsSchedule" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Confirmar borrado</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>¿Confirma que desea eliminar el registro?</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <a id="confirmDeleteSendingEventsButton" href="#"
+                                   class="btn btn-warning" data-dismiss="modal">Aceptar</a>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal add collection fixed time -->
+                <div class="modal fade" id="collectionFixedTime" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Agregar hora</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div id="formCollectionFixedTime">
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="modal-footer">
+                                <a href="#" class="btn btn-warning" data-dismiss="modal">Aceptar</a>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}
